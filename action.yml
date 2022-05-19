@@ -1,0 +1,48 @@
+name: 'heroku-create-app'
+
+inputs:
+    app:
+        required: true
+        description: |
+            Heroku app.
+            Ex: 'app'.
+
+    team:
+        required: true
+        description: |
+            Heroku team.
+            Ex: 'team'.
+
+    stack:
+        required: true
+        description: |
+            Heroku stack.
+            Ex: 'heroku-20'.
+
+    region:
+        required: true
+        description: |
+            Heroku region.
+            Ex: 'eu'.
+
+    token:
+        required: true
+        description: |
+            Heroku API Key.
+            Ex: 'asdf1234'.
+
+runs:
+    using: 'composite'
+
+    steps:
+        - name: 'Create app'
+          uses: 'intercapinc/heroku-client@48a0127c4f9227b043d3af78fdaa997be701382e'
+          with:
+              endpoint: 'teams/apps'
+              token: '${{ inputs.token }}'
+              expected: 201 422
+              data: >-
+                  name='${{ inputs.app }}'
+                  team='${{ inputs.team }}'
+                  stack='${{ inputs.stack }}'
+                  region='${{ inputs.region }}'
